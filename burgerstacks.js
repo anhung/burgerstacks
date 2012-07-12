@@ -52,14 +52,14 @@ function init() {
     initSection(ui_playerRow, 0, "player");
     ui_playerRow[player].className = "playerSelected";
     ui_playerRow[player+1].className = "playerSelected";
+    generateRandomIngredients();
     updateUI();
 }
 
 function updateUI() {
     // spawn row: generate random ingredients
     for (var i = 0; i < ui_spawnRow.length; i++) {
-        ui_spawnRow[i].innerHTML =
-            ingredients[Math.ceil(Math.random() * 6)];
+        ui_spawnRow[i].innerHTML = spawns[i];
     }
     
     // columns: update any swaps
@@ -97,9 +97,11 @@ function keyHit(evt) {
         
         if (thisKey === key_a) {
             //swapColumns();
+            generateRandomIngredients();
         }
         else if (thisKey === key_s) {
-            dropIngredients();
+            //dropIngredients();s
+            generateRandomIngredients();
         }
         else if (thisKey === key_left) {
             updatePlayerSelection("left");
@@ -109,10 +111,6 @@ function keyHit(evt) {
         }
         
         updateUI();
-    }
-    else {
-        //clear board
-        //init
     }
 }
 
@@ -129,7 +127,7 @@ function updatePlayerSelection(direction) {
 
 function dropIngredients() {
     if (!gameEnded && allColumnsSafe()) {
-        
+    
     }
     else {
         gameEnded = true;
@@ -151,8 +149,8 @@ function allColumnsSafe() {
     return true;
 }
 
-function clearArray(a) {
-    for (var i; i < a.length; i++) {
-        a.pop();
+function generateRandomIngredients() {
+    for (var i = 0; i < spawns.length; i++) {
+        spawns[i] = ingredients[Math.ceil(Math.random() * 6)];
     }
 }
