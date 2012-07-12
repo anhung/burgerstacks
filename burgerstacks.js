@@ -27,6 +27,10 @@ function init() {
     spawns = new Array(4);
     ingredients = ["Top bun", "Cheese", "Lettuce",
         "Onion", "Tomato", "Patty", "Bottom bun"];
+    column0 = new Array();
+    column1 = new Array();
+    column2 = new Array();
+    column3 = new Array();
         
     // init ui
     ui_column0 = new Array(9);
@@ -50,6 +54,10 @@ function init() {
     initSection(ui_column3, 27, "grid");
     initSection(ui_spawnRow, 0, "spawn");
     initSection(ui_playerRow, 0, "player");
+    ui_column0.reverse();
+    ui_column1.reverse();
+    ui_column2.reverse();
+    ui_column3.reverse();
     ui_playerRow[player].className = "playerSelected";
     ui_playerRow[player+1].className = "playerSelected";
     generateRandomIngredients();
@@ -63,7 +71,16 @@ function updateUI() {
     }
     
     // columns: update any swaps
+    function updateColumn(ui_column, column) {
+        for (var i = 0; i < column.length; i++) {
+            ui_column[i].innerHTML = column[i];
+        }
+    }
     
+    updateColumn(ui_column0, column0);
+    updateColumn(ui_column1, column1);
+    updateColumn(ui_column2, column2);
+    updateColumn(ui_column3, column3);
     
     // player row: update selected columns
     for (var i = 0; i < ui_playerRow.length; i++) {
@@ -97,11 +114,12 @@ function keyHit(evt) {
         
         if (thisKey === key_a) {
             //swapColumns();
-            generateRandomIngredients();
         }
         else if (thisKey === key_s) {
-            //dropIngredients();s
-            generateRandomIngredients();
+            dropIngredients();
+            if (allColumnsSafe()) {
+                generateRandomIngredients();
+            }
         }
         else if (thisKey === key_left) {
             updatePlayerSelection("left");
@@ -127,7 +145,10 @@ function updatePlayerSelection(direction) {
 
 function dropIngredients() {
     if (!gameEnded && allColumnsSafe()) {
-    
+            column0.push(spawns[0]);
+            column1.push(spawns[1]);
+            column2.push(spawns[2]);
+            column3.push(spawns[3]);
     }
     else {
         gameEnded = true;
@@ -146,7 +167,8 @@ function swapColumns() {
 }   
 
 function allColumnsSafe() {
-    return true;
+    return (column0.length < 9) && (column1.length < 9) &&
+        (column2.length < 9) && (column3.length < 9);
 }
 
 function generateRandomIngredients() {
