@@ -113,7 +113,7 @@ function keyHit(evt) {
         }
         
         if (thisKey === key_a) {
-            //swapColumns();
+            swapColumns();
         }
         else if (thisKey === key_s) {
             dropIngredients();
@@ -162,7 +162,28 @@ function checkForMatch() {
 
 function swapColumns() {
     if (!gameEnded) {
-    
+        var col1 = new Array();
+        var col2 = new Array();
+        var swap = new Array();
+        
+        // determine the two selected columns
+        if (player === 0) {
+            col1 = column0;
+            col2 = column1;
+        }
+        else if (player === 1) {
+            col1 = column1;
+            col2 = column2;
+        }
+        else if (player === 2) {
+            col1 = column2;
+            col2 = column3;
+        }
+        
+        // do the swap!
+        swap = col1;
+        col1 = col2;
+        col2 = swap;
     }
 }   
 
