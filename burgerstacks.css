@@ -1,4 +1,4 @@
-body {
+body, p {
     background-color: white;
     color: black;
     font-size: 20px;
@@ -12,10 +12,13 @@ h1 {
 
 table {
     border-collapse: collapse;
+    width: 800px;
 }
 
 td {
-    padding: 10px;
+    width: 25%;
+    height: 30px;
+    padding: 5px;
     border: 2px #666 solid;
     text-align: center;
 }
