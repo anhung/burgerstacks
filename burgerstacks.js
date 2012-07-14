@@ -3,8 +3,6 @@
  * dropping ingredients to create matches.
  *
  * Future features:
- * Burgers: Build burgers by surrounding items with a Top bun and a Bottom
- * bun to eliminate multiple ingredients at once! Gives bonus points!
  * Nomming: Use the power ups by capturing them inside burgers. Ideas: remove
  * all of one ingredient, clear one column, or remove top from each column.
  *
@@ -94,7 +92,7 @@ function init() {
     
     // Set up messages underneath the game grid.
     ui_message = document.getElementById("message");
-    ui_message.innerHTML = "Burgers suck."
+    ui_message.innerHTML = "Don't worry about the top buns."
     ui_score = document.getElementById("score");
     
     // Initialize the sections of the game grid.
@@ -255,14 +253,25 @@ function keyHit(evt) {
  */
 function dropIngredients() {
     /**
-     * Future feature: build burgers to eliminate multiple ingredients at once.
+     * Checks to see if a burger can be formed. A burger is formed when a
+     * top bun is dropped into a column where a bottom bun already exists.
      *
      * @param {String} spawn The specified spawn item.
      * @param (Array} column The column to check.
      * @returns {Boolean} true if a burger can be made, otherwise false.
      */
     function checkForBurger(spawn, column) {
-        // coming soon
+        var topbun = img_ingredients[0];
+        var bottombun = img_ingredients[6];
+        if (spawn === topbun) {
+            // Check the column for a bottom bun.
+            for (var i = column.length-1; i >= 0; i--) {
+                if (column[i] === bottombun) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -290,18 +299,37 @@ function dropIngredients() {
     /**
      * Performs the actual drop. If there is a match, pop the top element out
      * of the column and increment the score counter. Otherwise, push the 
-     * spawn item onto the column.
+     * spawn item onto the column. Accounts for burgers too. Top buns that
+     * don't form a burger just disappear.
      *
      * @param {String} spawn The specified spawn item.
      * @param {Array} column The column to check.
      */
     function doDrop(spawn, column) {
-        if (checkForMatch(spawn, column)) {
+        if (checkForBurger(spawn, column)) {
+            var bottombun = img_ingredients[6];
+            var i = column.length - 1;
+            var bonus = 1;  
+            // Pop all the ingredients
+            while (column[i] !== bottombun) {
+                column.pop();
+                i = i - 1;
+                bonus = bonus + 1;
+            }
+            // Pop the bottom bun
+            column.pop();
+            
+            // Calculate points: (2 + # of items) * # of items
+            points = points + ((2 + bonus) * bonus)
+        }
+        else if (checkForMatch(spawn, column)) {
             column.pop();
             points = points + 1;
         }
         else {
-            if (!gameEnded) {
+            var topbun = img_ingredients[0];
+            // Don't let top buns drop if not forming a burger
+            if (!gameEnded && spawn !== topbun) {
                 column.push(spawn);
             }
         }
