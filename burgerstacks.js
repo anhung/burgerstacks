@@ -35,6 +35,8 @@ var ui_column3;     // Array, right-most column of cells
 var ui_spawnRow;    // Array, cells corresponding to the spawn row
 var ui_message;     // HTML element to display messages to player
 var ui_score;       // HTML element to display score counter
+var img_ingredients;// Array, src of ingredient images
+var pic;
 
 /**
  * Initializes all of game and UI components. Gets the game ready to play!
@@ -49,6 +51,8 @@ function init() {
     spawns = new Array(4);
     ingredients = ["Top bun", "Cheese", "Lettuce",
         "Onion", "Tomato", "Patty", "Bottom bun"];
+    img_ingredients = ["topbun.png", "cheese.png", "lettuce.png",
+        "onion.png", "tomato.png", "patty.png", "bottombun.png"];
     column0 = new Array();
     column1 = new Array();
     column2 = new Array();
@@ -137,7 +141,7 @@ function updateUI() {
         // Display this column's items.
         for (var i = 0; i < column.length; i++) {
             if (i < 9) {
-                ui_column[i].innerHTML = column[i];
+                ui_column[i].innerHTML = "<img src=\"images/" + column[i] + "\">";
             }
         }
         // Clean up the rest of the column.
@@ -148,7 +152,7 @@ function updateUI() {
 
     // Generate new random ingredients.
     for (var i = 0; i < ui_spawnRow.length; i++) {
-        ui_spawnRow[i].innerHTML = spawns[i];
+        ui_spawnRow[i].innerHTML = "<img src=\"images/" + spawns[i] + "\">";
     }
     
     // Update the columns.
@@ -389,7 +393,7 @@ function allColumnsSafe() {
  */
 function generateRandomIngredients() {
     for (var i = 0; i < spawns.length; i++) {
-        spawns[i] = ingredients[Math.ceil(Math.random() * 6)];
+        spawns[i] = img_ingredients[Math.ceil(Math.random() * 6)];
     }
 }
 
